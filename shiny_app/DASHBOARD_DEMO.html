@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard Demo - Coin Flip Randomness & CRT-7</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 0 auto;
+            max-width: 1000px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .header h1 {
+            color: #2d3748;
+            font-weight: 700;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 1.2em;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .info-box h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .feature-desc {
+            color: #718096;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .screenshot-section {
+            margin: 40px 0;
+        }
+        
+        .screenshot-placeholder {
+            background: #f7fafc;
+            border: 3px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 60px 20px;
+            text-align: center;
+            color: #718096;
+            margin: 20px 0;
+        }
+        
+        .stage-preview {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        .stage-preview h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        code {
+            background: #2d3748;
+            color: #48bb78;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .metrics-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .metric-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            color: #718096;
+            font-size: 0.9em;
+        }
+        
+        ul {
+            line-height: 1.8;
+        }
+        
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .tech-badge {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🪙 Randomness Intuition Test</h1>
+            <p>Test your ability to generate random sequences and measure your cognitive reflection</p>
+        </div>
+
+        <div class="info-box">
+            <h3>About This Dashboard</h3>
+            <p>An interactive Shiny application that combines two psychological assessments:</p>
+            <ul>
+                <li><strong>Mental Coin Flipping:</strong> Test your intuition about randomness</li>
+                <li><strong>CRT-7:</strong> Measure your cognitive reflection ability</li>
+            </ul>
+            <p>Get instant, personalized feedback on both assessments!</p>
+        </div>
+
+        <h2 style="text-align: center; color: #2d3748;">✨ Key Features</h2>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">Flexible Test Length</div>
+                <div class="feature-desc">Choose 12, 20, 50, or 200 flips based on your time and interest</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <div class="feature-title">CRT-7 Assessment</div>
+                <div class="feature-desc">Complete cognitive reflection test with all 7 questions</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Instant Analysis</div>
+                <div class="feature-desc">Get comprehensive results immediately after completion</div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-title">Beautiful Visuals</div>
+                <div class="feature-desc">Interactive charts and graphs of your performance</div>
+            </div>
+        </div>
+
+        <h2 style="text-align: center; color: #2d3748; margin-top: 50px;">📋 Dashboard Flow</h2>
+
+        <div class="stage-preview">
+            <h4>Stage 1: Welcome & Selection</h4>
+            <p>Users are greeted and choose their preferred test length:</p>
+            <ul>
+                <li><strong>12 flips:</strong> Quick test (~3 minutes)</li>
+                <li><strong>20 flips:</strong> Standard test (~5 minutes)</li>
+                <li><strong>50 flips:</strong> Challenging test (~7 minutes)</li>
+                <li><strong>200 flips:</strong> Expert test (~10 minutes)</li>
+            </ul>
+        </div>
+
+        <div class="stage-preview">
+            <h4>Stage 2: Mental Coin Flipping</h4>
+            <p>Users imagine flipping a coin and enter their sequence:</p>
+            <ul>
+                <li>Real-time character counter: <code>12 / 20 characters</code></li>
+                <li>Input validation (only H and T allowed)</li>
+                <li>Visual feedback on completion status</li>
+            </ul>
+            <div style="background: #f7fafc; padding: 20px; border-radius: 8px; text-align: center; font-family: 'Courier New', monospace; font-size: 1.5em; letter-spacing: 3px; margin: 15px 0;">
+                HTHHTTHTHHHTHTTTHHTT
+            </div>
+        </div>
+
+        <div class="stage-preview">
+            <h4>Stage 3: CRT-7 Questions</h4>
+            <p>Seven cognitive reflection questions with free-text input:</p>
+            <ul>
+                <li>Bat and ball problem</li>
+                <li>Widget machines</li>
+                <li>Lily pads doubling</li>
+                <li>Race position</li>
+                <li>Sheep problem</li>
+                <li>Emily's sisters</li>
+                <li>Dirt in a hole</li>
+            </ul>
+        </div>
+
+        <div class="stage-preview">
+            <h4>Stage 4: Personalized Results</h4>
+            <p>Comprehensive analysis including:</p>
+            
+            <h5 style="color: #667eea; margin-top: 20px;">CRT-7 Results:</h5>
+            <div class="metrics-preview">
+                <div class="metric-box">
+                    <div class="metric-label">Your Score</div>
+                    <div class="metric-value">5 / 7</div>
+                    <div class="metric-label">Above Average</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Percentile</div>
+                    <div class="metric-value">75%</div>
+                    <div class="metric-label">Top Quarter</div>
+                </div>
+            </div>
+
+            <h5 style="color: #667eea; margin-top: 20px;">Randomness Analysis:</h5>
+            <div class="metrics-preview">
+                <div class="metric-box">
+                    <div class="metric-label">Randomness Score</div>
+                    <div class="metric-value">73%</div>
+                    <div class="metric-label">Good</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Alternation Rate</div>
+                    <div class="metric-value">58%</div>
+                    <div class="metric-label">Slightly High</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Longest Streak</div>
+                    <div class="metric-value">4</div>
+                    <div class="metric-label">Normal</div>
+                </div>
+            </div>
+
+            <ul>
+                <li>Your coin flip sequence displayed prominently</li>
+                <li>Cumulative heads proportion graph</li>
+                <li>Personalized interpretation of patterns</li>
+                <li>Explanation of psychological biases detected</li>
+                <li>Combined insights linking CRT and randomness scores</li>
+            </ul>
+        </div>
+
+        <h2 style="text-align: center; color: #2d3748; margin-top: 50px;">🛠️ Technical Stack</h2>
+        
+        <div class="tech-stack">
+            <span class="tech-badge">R Shiny</span>
+            <span class="tech-badge">shinyjs</span>
+            <span class="tech-badge">tidyverse</span>
+            <span class="tech-badge">plotly</span>
+            <span class="tech-badge">ggplot2</span>
+        </div>
+
+        <div class="info-box" style="margin-top: 30px;">
+            <h3>🚀 Getting Started</h3>
+            <p><strong>Requirements:</strong></p>
+            <ul>
+                <li>R (version 4.0+)</li>
+                <li>Required packages: shiny, shinyjs, tidyverse, plotly, scales</li>
+            </ul>
+            
+            <p><strong>Quick Start:</strong></p>
+            <ol>
+                <li>Navigate to the <code>shiny_app</code> directory</li>
+                <li>Run: <code>./run_dashboard.sh</code></li>
+                <li>Or open <code>user_dashboard.R</code> in RStudio and click "Run App"</li>
+            </ol>
+
+            <p><strong>Features:</strong></p>
+            <ul>
+                <li>✅ No data storage - privacy-first design</li>
+                <li>✅ Instant results - no waiting</li>
+                <li>✅ Mobile-responsive interface</li>
+                <li>✅ Beautiful gradient design</li>
+                <li>✅ Interactive visualizations</li>
+                <li>✅ Detailed explanations and interpretations</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0;">
+            <p style="font-size: 1.2em; color: #4a5568; margin-bottom: 20px;">
+                <strong>Ready to test your randomness intuition?</strong>
+            </p>
+            <p style="color: #718096;">
+                Install R and the required packages, then run the dashboard!
+            </p>
+        </div>
+
+        <div class="info-box" style="background: linear-gradient(135deg, #fef5e7 0%, #fcf3cf 100%); border-left: 5px solid #f39c12;">
+            <h3 style="color: #e67e22;">📚 Documentation</h3>
+            <p>For detailed setup instructions, customization options, and troubleshooting:</p>
+            <p><strong>See:</strong> <code>USER_DASHBOARD_README.md</code></p>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e2e8f0; color: #718096;">
+            <p>Created for studying the relationship between cognitive reflection and randomness intuition</p>
+            <p style="font-size: 0.9em;">© 2025 Sanjay K Shetri</p>
+        </div>
+    </div>
+</body>
+</html>

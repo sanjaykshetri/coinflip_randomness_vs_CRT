@@ -1,16 +1,20 @@
 # 🪙 Coinflip Randomness vs. Cognitive Reflection
 
 [![R](https://img.shields.io/badge/R-4.0%2B-blue.svg)](https://www.r-project.org/)
+[![Shiny](https://img.shields.io/badge/Shiny-Interactive-brightgreen.svg)](https://shiny.rstudio.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status: Active](https://img.shields.io/badge/Status-Active-success.svg)]()
 
 > Investigating the relationship between cognitive complexity and intuitive randomness: Can analytical thinkers simulate coinflips more "randomly"?
+
+**✨ NEW: Interactive Dashboard Available!** Test your own randomness intuition and cognitive reflection with instant personalized feedback.
 
 ---
 
 ## 📋 Table of Contents
 
 - [Overview](#overview)
+- [Interactive Dashboard](#interactive-dashboard)
 - [Research Question](#research-question)
 - [Methodology](#methodology)
 - [Key Findings](#key-findings)
@@ -33,6 +37,62 @@ This project examines whether **cognitive reflection ability** predicts **random
 2. **Randomness intuition** — how well participants simulate coin flips compared to truly random sequences
 
 The study bridges cognitive psychology, behavioral economics, and statistical reasoning.
+
+### 🚀 What's Included
+
+- **Research Analysis**: Complete statistical analysis of 80+ participants
+- **Interactive Dashboard**: User-facing web application with instant feedback
+- **Data Collection Tools**: Shiny app for gathering participant responses
+- **Comprehensive Documentation**: Methodology, findings, and technical details
+
+---
+
+## 🎮 Interactive Dashboard
+
+Test your own randomness intuition and cognitive reflection with our **interactive web dashboard**!
+
+### Features
+
+- ✅ **Flexible Test Lengths**: Choose from 12, 20, 50, 100, or 200 coin flips
+- ✅ **CRT-7 Assessment**: Complete 7 cognitive reflection questions with multiple choice
+- ✅ **Instant Analysis**: Get immediate personalized feedback including:
+  - Overall randomness score (0-100%)
+  - CRT-7 score with percentile ranking
+  - Detailed pattern analysis (alternation rate, streaks, balance)
+  - Interactive visualizations
+  - Personalized interpretation of your cognitive patterns
+- ✅ **Privacy-First**: No data storage, results shown immediately
+- ✅ **Beautiful UI**: Modern gradient design, mobile-responsive
+
+### 🌐 Live Demo
+
+> **Coming Soon**: Public deployment link will be added here
+
+To run locally:
+
+```bash
+# Navigate to the dashboard directory
+cd shiny_app
+
+# Run the dashboard
+./run_dashboard.sh
+```
+
+Or open in R/RStudio:
+```r
+shiny::runApp("shiny_app/user_dashboard.R")
+```
+
+**Access at:** http://localhost:3838
+
+### 🚀 Deploy Your Own
+
+Want to share this with others? Deploy to:
+- **ShinyApps.io** (Free tier available): `rsconnect::deployApp("shiny_app/user_dashboard.R")`
+- **Shiny Server** (Self-hosted): Copy to `/srv/shiny-server/`
+- **Docker**: See `shiny_app/DEPLOYMENT.md` for container setup
+
+📖 See [`shiny_app/USER_DASHBOARD_README.md`](shiny_app/USER_DASHBOARD_README.md) for detailed documentation.
 
 ---
 
@@ -111,10 +171,19 @@ Where *A* = alternation rate, *R* = max run, *D* = head deviation
 ```
 coinflip_randomness_vs_CRT/
 ├── README.md                          # You are here
-├── main_analysis.R                    # Master script (run this!)
+├── main_analysis.R                    # Master script (run research analysis)
 ├── coinflip_randomness_vs_CRT.Rproj  # RStudio project file
 │
-├── R/                                 # Modular analysis code
+├── shiny_app/                         # 🆕 Interactive Applications
+│   ├── user_dashboard.R               # User-facing dashboard (NEW!)
+│   ├── app.R                          # Data collection tool
+│   ├── analysis_functions.R           # Scoring algorithms
+│   ├── utils.R                        # Helper functions
+│   ├── run_dashboard.sh               # Quick-start script
+│   ├── USER_DASHBOARD_README.md       # Dashboard documentation
+│   └── IMPLEMENTATION_SUMMARY.md      # Technical details
+│
+├── R/                                 # Research Analysis Code
 │   ├── 01_data_loading.R              # Import & clean functions
 │   ├── 02_crt_scoring.R               # CRT-7 scoring logic
 │   ├── 03_randomness_metrics.R        # Randomness algorithms
@@ -148,12 +217,25 @@ coinflip_randomness_vs_CRT/
 
 ### Required R Packages
 
+**For Research Analysis:**
 ```r
 install.packages(c(
   "tidyverse",   # Data manipulation & ggplot2
   "readxl",      # Excel file import
   "janitor",     # Column name cleaning
   "broom"        # Tidy statistical output
+))
+```
+
+**For Interactive Dashboard:**
+```r
+install.packages(c(
+  "shiny",       # Web application framework
+  "shinyjs",     # JavaScript integration
+  "dplyr",       # Data manipulation
+  "stringr",     # String operations
+  "plotly",      # Interactive visualizations
+  "scales"       # Scaling functions
 ))
 ```
 
@@ -172,7 +254,29 @@ cd coinflip_randomness_vs_CRT
 
 ## 💻 Usage
 
-### Quick Start (One Command)
+### Option 1: Interactive Dashboard (Try It Yourself!)
+
+Experience the test firsthand with instant feedback:
+
+```bash
+cd shiny_app
+./run_dashboard.sh
+```
+
+Or in R:
+```r
+shiny::runApp("shiny_app/user_dashboard.R")
+```
+
+**What you'll do:**
+1. Choose test length (12, 20, 50, 100, or 200 flips)
+2. Imagine and enter your coin flip sequence
+3. Answer 7 CRT questions (multiple choice)
+4. Get instant analysis with interactive visualizations
+
+### Option 2: Research Analysis (Replicate Findings)
+
+Run the complete statistical analysis:
 
 ```r
 # Run the complete analysis pipeline
@@ -186,6 +290,14 @@ This will:
 4. ✅ Generate statistical reports
 5. ✅ Create publication-quality figures
 6. ✅ Export results to `output/` directory
+
+### Option 3: Data Collection
+
+Use the Shiny data collection app for your own study:
+
+```r
+shiny::runApp("shiny_app/app.R")
+```
 
 ### Step-by-Step Analysis
 
@@ -275,8 +387,23 @@ plots$main_scatter  # View primary figure
 ### Publication Path
 
 - Expand to **pre-registered replication** with larger sample
-- Develop **Shiny web app** for crowd-sourced data collection
+- ✅ **Shiny web app developed** for crowd-sourced data collection and public engagement
 - Target journals: *Judgment and Decision Making*, *Cognitive Psychology*, *Behavioral Research Methods*
+
+---
+
+## 🎯 Project Milestones
+
+- [x] Initial data collection (n=83)
+- [x] Statistical analysis and visualization
+- [x] Core randomness metrics implementation
+- [x] Interactive data collection tool
+- [x] **User-facing dashboard with instant feedback**
+- [x] **Multiple test lengths (12, 20, 50, 100, 200 flips)**
+- [x] **Multiple choice CRT format for better UX**
+- [ ] Scale up data collection (target: n=500+)
+- [ ] Cross-cultural validation
+- [ ] Machine learning pattern analysis
 
 **See [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md) for detailed research roadmap.**
 
@@ -297,6 +424,31 @@ Contributions are welcome! Areas for improvement:
 3. Commit changes (`git commit -m 'Add AmazingFeature'`)
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+---
+
+## 🛠️ Technologies & Tools
+
+### Research Analysis
+- **R** (4.0+) - Statistical computing
+- **tidyverse** - Data manipulation and visualization
+- **ggplot2** - Publication-quality graphics
+- **broom** - Statistical model tidying
+
+### Interactive Applications
+- **Shiny** - Web application framework
+- **shinyjs** - Interactive JavaScript features
+- **plotly** - Interactive visualizations
+- **Custom CSS** - Modern gradient UI design
+
+### Features
+- ✅ Modular, reusable code architecture
+- ✅ Comprehensive documentation
+- ✅ Automated analysis pipeline
+- ✅ Real-time input validation
+- ✅ Responsive design (mobile-friendly)
+- ✅ Privacy-first (no data tracking in user dashboard)
+- ✅ Flexible scoring algorithms (adapts to sequence length)
 
 ---
 
@@ -357,6 +509,30 @@ You are free to:
 - Cognitive reflection test design: Toplak, West, & Stanovich
 - Randomness literature: Kahneman, Tversky, Gilovich, Falk, Konold
 - R community for amazing open-source tools
+- Shiny framework for making interactive applications accessible
+
+---
+
+## 🚀 Try It Now!
+
+Want to test yourself? The interactive dashboard is ready to use:
+
+```bash
+cd shiny_app && ./run_dashboard.sh
+```
+
+Or in R:
+```r
+shiny::runApp("shiny_app/user_dashboard.R")
+```
+
+**Features you'll love:**
+- 🎯 Choose your difficulty: 12-200 flips
+- 🧠 Complete the CRT-7 test
+- 📊 Get instant personalized analysis
+- 📈 Interactive visualizations
+- 🎨 Beautiful, modern interface
+- 🔒 Privacy-first (no tracking)
 
 ---
 
@@ -364,7 +540,9 @@ You are free to:
 
 **⭐ Star this repo if you find it useful!**
 
-*Last Updated: November 2025*
+[![GitHub stars](https://img.shields.io/github/stars/sanjaykshetri/coinflip_randomness_vs_CRT?style=social)](https://github.com/sanjaykshetri/coinflip_randomness_vs_CRT)
+
+*Last Updated: November 29, 2025*
 
 </div> 
 

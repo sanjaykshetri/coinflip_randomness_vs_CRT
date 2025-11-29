@@ -4,7 +4,8 @@
 # These functions calculate randomness metrics and CRT scores
 # ==============================================================================
 
-library(tidyverse)
+library(dplyr)
+library(stringr)
 
 # ==============================================================================
 # RANDOMNESS METRICS
@@ -77,6 +78,42 @@ calculate_randomness_score <- function(seq) {
   alt_penalty <- abs(alt_rate - 0.5)
   run_penalty <- abs(max_run - 4.5) / 4.5
   head_penalty <- head_dev / 10
+  
+  # Composite score: 1 - average penalty
+  score <- 1 - (alt_penalty + run_penalty + head_penalty) / 3
+  
+  return(max(0, min(1, score)))  # Bound between 0 and 1
+}
+
+#' Calculate Randomness Score with Flexible Length
+#'
+#' Adjusts scoring for different sequence lengths
+#'
+#' @param seq Character string of coinflip sequence
+#' @param n_flips Number of flips in sequence
+#' @return Numeric value between 0 and 1
+calculate_randomness_score_flexible <- function(seq, n_flips) {
+  if (is.na(seq) || nchar(seq) != n_flips) return(NA_real_)
+  
+  # Calculate individual metrics
+  alt_rate <- calc_alternation_rate(seq)
+  max_run <- calc_max_run(seq)
+  n_heads <- str_count(toupper(seq), "H")
+  head_proportion <- n_heads / n_flips
+  
+  # Check for NA values
+  if (is.na(alt_rate) || is.na(max_run)) {
+    return(NA_real_)
+  }
+  
+  # Dynamic ideal values based on sequence length
+  # Expected max run: approximately log2(n) + 1
+  ideal_max_run <- log2(n_flips) + 1
+  
+  # Calculate penalties (deviations from ideal values)
+  alt_penalty <- abs(alt_rate - 0.5)  # Ideal: 50% alternation
+  run_penalty <- abs(max_run - ideal_max_run) / ideal_max_run  # Dynamic based on length
+  head_penalty <- abs(head_proportion - 0.5)  # Ideal: 50% heads
   
   # Composite score: 1 - average penalty
   score <- 1 - (alt_penalty + run_penalty + head_penalty) / 3
